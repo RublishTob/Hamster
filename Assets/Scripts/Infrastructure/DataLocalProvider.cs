@@ -50,13 +50,25 @@ public class DataLocalProvider : IDataProvider
     {
         fileName = "PlayerSave";
         if (IsDataAlreadyExist() == false)
-            return false;
-        _persistentData.PlayerData = JsonConvert.DeserializeObject<PlayerSave>(File.ReadAllText(FullPath));
+        {
+            var Save = Resources.Load("Configs/PlayerSave") as TextAsset;
+            _persistentData.PlayerData = JsonConvert.DeserializeObject<PlayerSave>(Save.text);
+        }
+        else
+        {
+            _persistentData.PlayerData = JsonConvert.DeserializeObject<PlayerSave>(File.ReadAllText(FullPath));
+        }
 
         fileName = "Settings";
         if (IsDataAlreadyExist() == false)
-            return false;
-        _persistentData.Settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(FullPath));
+        {
+            var Settings = Resources.Load("Configs/Settings") as TextAsset;
+            _persistentData.Settings = JsonConvert.DeserializeObject<Settings>(Settings.text);
+        }
+        else
+        {
+            _persistentData.Settings = JsonConvert.DeserializeObject<Settings>(File.ReadAllText(FullPath));
+        }
 
         return true;
     }
@@ -102,9 +114,6 @@ public class DataLocalProvider : IDataProvider
     public bool TryLoadLocalization() 
     {
         LocalizationData localization = new LocalizationData();
-
-        if (IsDataAlreadyExist() == false)
-            return false;
 
         fileName = "Ru";
         var RuObj = Resources.Load("Configs/Ru") as TextAsset;
