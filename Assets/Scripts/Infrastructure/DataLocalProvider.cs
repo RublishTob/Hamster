@@ -1,6 +1,7 @@
 using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.IO;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class DataLocalProvider : IDataProvider
@@ -106,11 +107,16 @@ public class DataLocalProvider : IDataProvider
             return false;
 
         fileName = "Ru";
-        localization.Ru = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(FullPath));
+        var RuObj = Resources.Load("Configs/Ru") as TextAsset;
+        localization.Ru = JsonConvert.DeserializeObject<Dictionary<string, string>>(RuObj.text);
+
 
         fileName = "Eng";
-        localization.Eng = JsonConvert.DeserializeObject<Dictionary<string, string>>(File.ReadAllText(FullPath));
-        
+        var EngObj = Resources.Load("Configs/Eng") as TextAsset;
+        localization.Eng = JsonConvert.DeserializeObject<Dictionary<string, string>>(EngObj.text);
+
+
+
 
         _persistentData.LocalizateData = localization;
         return true;
